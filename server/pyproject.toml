@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "throwback"
+version = "0.1.0"
+description = "Package management for throwback application."
+authors = ["Dev Kunjadia <90876986+devk03@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = {extras = ["all"], version = "^0.110.0"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
