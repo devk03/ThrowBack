@@ -1,25 +1,40 @@
 import React from "react";
-import { View, FlatList, Text, Dimensions, StyleSheet } from "react-native";
+import { View, Text, FlatList, Dimensions, StyleSheet } from "react-native";
+import Feed from "./src/screens/feed/feed";
+import User from "./src/screens/user/user";
+import Gallery from "./src/screens/gallery/gallery";
 
-const { width } = Dimensions.get("window");
-
-const data = [
-  { key: "Page 1", color: "tomato" },
-  { key: "Page 2", color: "skyblue" },
-  { key: "Page 3", color: "limegreen" },
-  // Add more pages as needed
+const pages = [
+  { key: "Feed", component: "Feed" },
+  { key: "Gallery", component: "Gallery" },
+  { key: "User", component: "User" },
 ];
 
-const renderItem = ({ item }) => (
-  <View style={[styles.pageStyle, { backgroundColor: item.color }]}>
-    <Text style={styles.textStyle}>{item.key}</Text>
-  </View>
-);
+const components = {
+  Feed: Feed,
+  Gallery: Gallery,
+  User: User,
+};
+interface Item {
+  key: string;
+  component: string;
+}
+const renderItem = ({ item }: { item: Item }) => {
+  const PageComponent: React.ComponentType<any> =
+    components[item.component as keyof typeof components];
+  if (!PageComponent) return null; // Return null or a fallback component if component not found
+
+  return (
+    <View style={{ width: Dimensions.get("window").width }}>
+      <PageComponent />
+    </View>
+  );
+};
 
 const App = () => {
   return (
     <FlatList
-      data={data}
+      data={pages}
       renderItem={renderItem}
       horizontal={true}
       pagingEnabled={true}
@@ -31,13 +46,12 @@ const App = () => {
 
 const styles = StyleSheet.create({
   pageStyle: {
-    width: width, // Each page has the width of the screen
-    justifyContent: "center", // Center the content vertically
-    alignItems: "center", // Center the content horizontally
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   textStyle: {
-    fontSize: 24,
-    color: "white",
+    fontSize: 22,
   },
 });
 
